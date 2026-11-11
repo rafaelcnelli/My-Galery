@@ -18,13 +18,67 @@ import {
   serverTimestamp,
   Timestamp,
 } from 'firebase/firestore';
-import firebaseConfig from '../../firebase-applet-config.json';
 import {
   ClickBehavior,
   WallpaperTheme,
   WebAppItem,
 } from '../types/launcher';
 import { sanitizeWebAppItem } from '../utils/launcherLogic';
+
+interface FirebaseAppletConfig {
+  apiKey: string;
+  authDomain: string;
+  projectId: string;
+  storageBucket?: string;
+  messagingSenderId?: string;
+  appId: string;
+  firestoreDatabaseId: string;
+}
+
+// Load local firebase-applet-config.json if present (AI Studio), without failing build when gitignored on GitHub
+const localConfigModules = import.meta.glob<{ default: FirebaseAppletConfig }>(
+  '../../firebase-applet-config.json',
+  { eager: true }
+);
+const localFileConfig =
+  localConfigModules['../../firebase-applet-config.json']?.default;
+
+const firebaseConfig: FirebaseAppletConfig = {
+  apiKey:
+    import.meta.env.VITE_FIREBASE_API_KEY ||
+    localFileConfig?.apiKey ||
+    'demo-local-only-key',
+  authDomain:
+    import.meta.env.VITE_FIREBASE_AUTH_DOMAIN ||
+    localFileConfig?.authDomain ||
+    'demo-local.firebaseapp.com',
+  projectId:
+    import.meta.env.VITE_FIREBASE_PROJECT_ID ||
+    localFileConfig?.projectId ||
+    'demo-local',
+  storageBucket:
+    import.meta.env.VITE_FIREBASE_STORAGE_BUCKET ||
+    localFileConfig?.storageBucket ||
+    '',
+  messagingSenderId:
+    import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID ||
+    localFileConfig?.messagingSenderId ||
+    '',
+  appId:
+    import.meta.env.VITE_FIREBASE_APP_ID ||
+    localFileConfig?.appId ||
+    '1:000000000000:web:000000000000',
+  firestoreDatabaseId:
+    import.meta.env.VITE_FIREBASE_FIRESTORE_DATABASE_ID ||
+    localFileConfig?.firestoreDatabaseId ||
+    '(default)',
+};
+
+export const isFirebaseConfigured = Boolean(
+  (import.meta.env.VITE_FIREBASE_API_KEY || localFileConfig?.apiKey) &&
+    firebaseConfig.apiKey !== 'demo-local-only-key' &&
+    firebaseConfig.apiKey !== 'YOUR_FIREBASE_API_KEY'
+);
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
@@ -87,6 +141,7 @@ export function handleFirestoreError(
  * Validates connection to Firestore on application boot as required by guidelines.
  */
 export async function testFirestoreConnection(): Promise<void> {
+  if (!isFirebaseConfigured) return;
   try {
     await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {
