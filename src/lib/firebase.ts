@@ -51,27 +51,27 @@ const firebaseConfig: FirebaseAppletConfig = {
   authDomain:
     import.meta.env.VITE_FIREBASE_AUTH_DOMAIN ||
     localFileConfig?.authDomain ||
-    'demo-local.firebaseapp.com',
+    'gen-lang-client-0184131312.firebaseapp.com',
   projectId:
     import.meta.env.VITE_FIREBASE_PROJECT_ID ||
     localFileConfig?.projectId ||
-    'demo-local',
+    'gen-lang-client-0184131312',
   storageBucket:
     import.meta.env.VITE_FIREBASE_STORAGE_BUCKET ||
     localFileConfig?.storageBucket ||
-    '',
+    'gen-lang-client-0184131312.firebasestorage.app',
   messagingSenderId:
     import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID ||
     localFileConfig?.messagingSenderId ||
-    '',
+    '952928530363',
   appId:
     import.meta.env.VITE_FIREBASE_APP_ID ||
     localFileConfig?.appId ||
-    '1:000000000000:web:000000000000',
+    '1:952928530363:web:254ee5ad64721d2c531e9e',
   firestoreDatabaseId:
     import.meta.env.VITE_FIREBASE_FIRESTORE_DATABASE_ID ||
     localFileConfig?.firestoreDatabaseId ||
-    '(default)',
+    'ai-studio-bb4f3703-a328-40a5-8152-a53c6826731d',
 };
 
 export const isFirebaseConfigured = Boolean(
