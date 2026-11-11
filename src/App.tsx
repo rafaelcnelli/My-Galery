@@ -43,6 +43,7 @@ import { SphereView } from './components/SphereView';
 import { AppFormModal } from './components/AppFormModal';
 import { LivePreviewModal } from './components/LivePreviewModal';
 import { CloudSyncModal } from './components/CloudSyncModal';
+import { OfflineIndicator } from './components/OfflineIndicator';
 
 const LOCAL_STORAGE_KEY = 'sonoma_web_os_launcher_v1';
 
@@ -712,6 +713,9 @@ export default function App() {
           onMoveOrSwapSlot={handleMoveOrSwapSlot}
         />
       )}
+
+      {/* Offline Connectivity Banner */}
+      <OfflineIndicator />
 
       {/* Subtle Floating Toast Feedback */}
       {toastMessage && (

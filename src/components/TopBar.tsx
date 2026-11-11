@@ -27,6 +27,7 @@ import {
   WALLPAPER_THEMES,
   WallpaperTheme,
 } from '../types/launcher';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface TopBarProps {
   hubTitle: string;
@@ -239,6 +240,8 @@ export const TopBar: React.FC<TopBarProps> = ({
             <Plus className="w-3 h-3" />
             <span className="hidden sm:inline">Novo App</span>
           </button>
+
+          <PWAInstallButton compact />
 
           <div className="w-px h-4 bg-white/15 shrink-0" />
 
@@ -626,6 +629,9 @@ export const TopBar: React.FC<TopBarProps> = ({
               Nuvem
             </span>
           </button>
+
+          {/* PWA Install Button */}
+          <PWAInstallButton />
 
           {/* Primary Action Button: + Novo Web App */}
           <button
